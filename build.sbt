@@ -2,7 +2,7 @@ import bintray.Keys._
 
 sbtPlugin := true
 
-organization := "com.bicou.sbt"
+organization := "com.de.sbt"
 
 name := "sbt-hbs"
 
