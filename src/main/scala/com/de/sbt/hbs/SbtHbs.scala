@@ -1,4 +1,4 @@
-package com.bicou.sbt.hbs
+package com.de.sbt.hbs
 
 import sbt._
 import sbt.Keys._
@@ -44,7 +44,7 @@ object SbtHbs extends AutoPlugin {
 
     excludeFilter := HiddenFileFilter,
     includeFilter := "*.hbs" || "*.handlebars",
-    
+
     jsOptions := JsObject(
       "amd" -> JsBoolean(amd.value),
       "commonjs" -> JsString(commonjs.value),
