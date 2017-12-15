@@ -9,19 +9,19 @@ import spray.json._
 object Import {
 
   object HbsKeys {
-    val hbs = TaskKey[Seq[File]]("hbs", "Precompile handlebar templates.")
+    val handlebars = TaskKey[Seq[File]]("handlebars", "Precompile handlebar templates.")
 
-    val amd = SettingKey[Boolean]("hbs-amd", "Exports amd style (require.js)")
-    val commonjs = SettingKey[String]("hbs-commonjs", "Exports CommonJS style, path to Handlebars module")
-    val handlebarPath = SettingKey[String]("hbs-handlebarPath", "Path to handlebar.js (only valid for amd-style)")
-    val known = SettingKey[Seq[String]]("hbs-known", "Known helpers")
-    val knownOnly = SettingKey[Boolean]("hbs-knownOnly", "Known helpers only")
-    val namespace = SettingKey[String]("hbs-namespace", "Template namespace")
-    val root = SettingKey[String]("hbs-root", "Template root (base value that will be stripped from template names)")
-    val data = SettingKey[Boolean]("hbs-data", "Include data when compiling")
-    val bom = SettingKey[Boolean]("hbs-bom", "Removes the BOM (Byte Order Mark) from the beginning of the templates")
-    val simple = SettingKey[Boolean]("hbs-simple", "Output template function only")
-    val map = SettingKey[Boolean]("hbs-map", "Generates source maps")
+    val amd = SettingKey[Boolean]("handlebars-amd", "Exports amd style (require.js)")
+    val commonjs = SettingKey[String]("handlebars-commonjs", "Exports CommonJS style, path to Handlebars module")
+    val handlebarPath = SettingKey[String]("handlebars-handlebarPath", "Path to handlebar.js (only valid for amd-style)")
+    val known = SettingKey[Seq[String]]("handlebars-known", "Known helpers")
+    val knownOnly = SettingKey[Boolean]("handlebars-knownOnly", "Known helpers only")
+    val namespace = SettingKey[String]("handlebars-namespace", "Template namespace")
+    val root = SettingKey[String]("handlebars-root", "Template root (base value that will be stripped from template names)")
+    val data = SettingKey[Boolean]("handlebars-data", "Include data when compiling")
+    val bom = SettingKey[Boolean]("handlebars-bom", "Removes the BOM (Byte Order Mark) from the beginning of the templates")
+    val simple = SettingKey[Boolean]("handlebars-simple", "Output template function only")
+    val map = SettingKey[Boolean]("handlebars-map", "Generates source maps")
   }
 
 }
@@ -44,7 +44,7 @@ object SbtHbs extends AutoPlugin {
 
     excludeFilter := HiddenFileFilter,
     includeFilter := "*.hbs" || "*.handlebars",
-
+    
     jsOptions := JsObject(
       "amd" -> JsBoolean(amd.value),
       "commonjs" -> JsString(commonjs.value),
@@ -73,20 +73,20 @@ object SbtHbs extends AutoPlugin {
     simple := false,
     map := false
 
-  ) ++ inTask(hbs)(
+  ) ++ inTask(handlebars)(
     SbtJsTask.jsTaskSpecificUnscopedSettings ++
       inConfig(Assets)(hbsUnscopedSettings) ++
       inConfig(TestAssets)(hbsUnscopedSettings) ++
       Seq(
-        moduleName := "hbs",
+        moduleName := "handlebars",
         shellFile := getClass.getClassLoader.getResource("handlebars-shell.js"),
 
         taskMessage in Assets := "Handlebars compiling",
         taskMessage in TestAssets := "Handlebars test compiling"
       )
-  ) ++ SbtJsTask.addJsSourceFileTasks(hbs) ++ Seq(
-    hbs in Assets := (hbs in Assets).dependsOn(nodeModules in Assets).value,
-    hbs in TestAssets := (hbs in TestAssets).dependsOn(nodeModules in TestAssets).value
+  ) ++ SbtJsTask.addJsSourceFileTasks(handlebars) ++ Seq(
+    handlebars in Assets := (handlebars in Assets).dependsOn(nodeModules in Assets).value,
+    handlebars in TestAssets := (handlebars in TestAssets).dependsOn(nodeModules in TestAssets).value
   )
 
 }
