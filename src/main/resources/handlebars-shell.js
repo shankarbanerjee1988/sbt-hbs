@@ -1,9 +1,6 @@
 /* global process, require */
 
 (function () {
-    
-    "use strict";
-
     var args = process.argv,
         fs = require("fs"),
         mkdirp = require("mkdirp"),
@@ -115,7 +112,7 @@
           }
 
           var precompiled = Handlebars.precompile(data, o);
-
+          options.map = false;
           if (options.map) {
             var consumer = new SourceMapConsumer(precompiled.map);
             precompiled = SourceNode.fromStringWithSourceMap(precompiled.code, consumer);
